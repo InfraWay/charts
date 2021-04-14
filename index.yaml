@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  actions-runner:
+  - apiVersion: v2
+    created: "2021-04-14T23:06:20.647496+01:00"
+    description: Helm chart deploying GitHub actions runners
+    digest: 1627a91a599b2c63cf22079c7dabb110c7e677f203b8d6e8599cbaac7d021a38
+    name: actions-runner
+    type: application
+    urls:
+    - https://infraway.github.io/helm/actions-runner-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-04-14T23:06:20.64489+01:00"
