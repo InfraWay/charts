@@ -1,2 +1,2 @@
 # Helm Charts
-This repo contains useful helm2 charts
+This repo contains useful Helm charts
