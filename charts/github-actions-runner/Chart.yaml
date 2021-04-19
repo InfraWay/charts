@@ -1,0 +1,10 @@
+apiVersion: v2
+name: actions-runner
+description: Helm chart deploying GitHub actions runners
+# https://github.com/summerwind/actions-runner-controller#runnerdeployments
+# For the list of software installed on the runner browse here:
+# https://github.com/summerwind/actions-runner-controller#software-installed-in-the-runner-image
+
+type: application
+
+version: 0.1.0

@@ -1,0 +1,28 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: {{ include "actions-runner.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    spec:
+      {{- if not .Values.isOrganizationRunner }}
+      repository: {{ .Values.repository }}
+      {{- end }}
+      {{- if .Values.isOrganizationRunner }}
+      organization: {{ .Values.organization }}
+      {{- end }}
+      labels: {{ .Values.labels }}
+      dockerEnabled: {{ .Values.dockerEnabled }}
+      dockerdWithinRunnerContainer: {{ .Values.dockerdWithinRunnerContainer }}
+      image: {{ .Values.image }}
+      {{- if .Values.dockerdWithinRunnerContainer }}
+      volumeMounts:
+      - mountPath: /runner
+        name: runner
+      volumes:
+      - name: runner
+        emptyDir: {}
+      {{- end }}
+      workDir: {{ .Values.workDir }}
+      env: {{ .Values.env }}
