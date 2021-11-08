@@ -25,6 +25,6 @@ jobs:
           version: v3.7.1
 
       - name: Run chart-releaser
-        uses: stecky/yet-another-chart-releaser-action@v1.4.4
+        uses: stecky/yet-another-chart-releaser-action@v1
         env:
           YACR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
