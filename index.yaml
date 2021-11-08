@@ -3,6 +3,16 @@ entries:
   actions-runner:
   - apiVersion: v2
     appVersion: latest
+    created: "2021-11-08T10:33:56.344063428Z"
+    description: Helm chart deploying GitHub actions runners
+    digest: 00cd12dfab69cff75a6ab66d33d5a04e4c8e4de6ac9d3beebfc7e397aa2fa607
+    name: actions-runner
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/actions-runner-0.1.1/actions-runner-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: latest
     created: "2021-10-15T20:02:22.328596+01:00"
     description: Helm chart deploying GitHub actions runners
     digest: 9b7c08607b24818923c014082425ef65875a961470662c82eb4c0972166648a8
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/common-0.1.0/common-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-07T22:11:31.6766616Z"
+generated: "2021-11-08T10:33:56.344182229Z"
