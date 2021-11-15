@@ -1,0 +1,86 @@
+replicaCount: 1
+
+image:
+  repository: infraway/gh-deploy-bot
+  pullPolicy: Always
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+ingress:
+  enabled: false
+
+env:
+  - name: WEBHOOK_PROXY_URL
+    valueFrom:
+      secretKeyRef:
+        name: gh-deploy-bot-environment-variables
+        key: webhook-proxy-url
+  - name: APP_ID
+    valueFrom:
+      secretKeyRef:
+        name: gh-deploy-bot-environment-variables
+        key: app-id
+  - name: PRIVATE_KEY
+    valueFrom:
+      secretKeyRef:
+        name: gh-deploy-bot-environment-variables
+        key: private-key
+  - name: WEBHOOK_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: gh-deploy-bot-environment-variables
+        key: webhook-secret
+  - name: GITHUB_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: gh-deploy-bot-environment-variables
+        key: github-client-id
+  - name: GITHUB_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: gh-deploy-bot-environment-variables
+        key: github-client-secret
+
+livenessProbe:
+  enabled: false
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+readinessProbe:
+  enabled: false
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 10
+
+resources:
+  requests:
+    memory: 64Mi
+    cpu: 50m
+  limits:
+    memory: 512Mi
+    cpu: 500m
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
