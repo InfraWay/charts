@@ -6,15 +6,13 @@ spec:
   replicas: {{ .Values.replicaCount }}
   template:
     spec:
-      {{- if not .Values.isOrganizationRunner }}
-      repository: {{ .Values.repository }}
-      {{- end }}
       {{- if .Values.isOrganizationRunner }}
       organization: {{ .Values.organization }}
+      {{- else }}
+      repository: {{ .Values.repository }}
       {{- end }}
       labels:
         {{- toYaml .Values.labels | nindent 8 }}
-      dockerEnabled: {{ .Values.dockerEnabled }}
       dockerdWithinRunnerContainer: {{ .Values.dockerdWithinRunnerContainer }}
       image: {{ .Values.image }}
       env:
