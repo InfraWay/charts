@@ -1,0 +1,15 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: {{ include "actions-runner.fullname" . }}
+spec:
+  scaleDownDelaySecondsAfterScaleOut: {{ .Values.autoscaling.scaleDownDelaySecondsAfterScaleOut }}
+  scaleTargetRef:
+    name: {{ include "actions-runner.fullname" . }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  scaleUpTriggers:
+    - githubEvent: {}
+      duration: "30m"
+{{- end }}

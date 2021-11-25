@@ -12,7 +12,10 @@ spec:
       {{- if .Values.isOrganizationRunner }}
       organization: {{ .Values.organization }}
       {{- end }}
+      labels:
+        {{- toYaml .Values.labels | nindent 8 }}
       dockerEnabled: {{ .Values.dockerEnabled }}
       dockerdWithinRunnerContainer: {{ .Values.dockerdWithinRunnerContainer }}
       image: {{ .Values.image }}
-      env: {{ .Values.env }}
+      env:
+        {{- toYaml .Values.env | nindent 8 }}
