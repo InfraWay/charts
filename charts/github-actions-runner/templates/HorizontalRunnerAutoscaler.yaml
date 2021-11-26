@@ -11,5 +11,5 @@ spec:
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   scaleUpTriggers:
     - githubEvent: {}
-      duration: "30m"
+      duration: {{ .Values.autoscaling.duration }}
 {{- end }}

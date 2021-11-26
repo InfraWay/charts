@@ -29,3 +29,4 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 10
   scaleDownDelaySecondsAfterScaleOut: 300
+  duration: "10m"
