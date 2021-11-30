@@ -60,6 +60,15 @@ entries:
     version: 0.1.0
   gh-deploy-bot:
   - apiVersion: v2
+    created: "2021-11-30T08:08:19.274443266Z"
+    description: Helm chart for gh-deploy-bot
+    digest: bb4c57be395a41acbcc423a3faf8d8df15dc941526e4bed026868891cdda2403
+    name: gh-deploy-bot
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/gh-deploy-bot-0.1.1/gh-deploy-bot-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2021-11-15T11:18:53.463075152Z"
     description: Helm chart for gh-deploy-bot
     digest: 5ff34ca98b41ebd4ee80cdfff4a8816e8dc75f30e581ec3076c819f7d379851f
@@ -68,4 +77,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/gh-deploy-bot-0.1.0/gh-deploy-bot-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-26T11:50:56.502769488Z"
+generated: "2021-11-30T08:08:19.274480067Z"
