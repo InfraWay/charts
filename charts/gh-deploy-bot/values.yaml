@@ -20,8 +20,20 @@ podSecurityContext: {}
 
 securityContext: {}
 
+service:
+  type: ClusterIP
+  port: 80
+
 ingress:
-  enabled: false
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: "deploy-bot.infraway.io"
+  tls:
+    - secretName: deploy-bot-web-tls
+      hosts:
+        - "deploy-bot.infraway.io"
 
 env:
   - name: WEBHOOK_PROXY_URL
