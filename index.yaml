@@ -48,6 +48,16 @@ entries:
     urls:
     - https://infraway.github.io/helm/actions-runner-0.1.0.tgz
     version: 0.1.0
+  apps-serviceaccount:
+  - apiVersion: v2
+    created: "2021-12-09T15:40:23.220135128Z"
+    description: Chart creates service account and secret with docker registry access
+    digest: f981a4f0a71506909081a49330da6ddf87de91edbc90a0ad48cda2a19df08be9
+    name: apps-serviceaccount
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/apps-serviceaccount-0.1.0/apps-serviceaccount-0.1.0.tgz
+    version: 0.1.0
   common:
   - apiVersion: v2
     created: "2021-11-07T22:11:31.676648199Z"
@@ -87,4 +97,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/letsencrypt-issuers-0.1.0/letsencrypt-issuers-0.1.0.tgz
     version: 0.1.0
-generated: "2021-12-09T15:35:59.81388222Z"
+generated: "2021-12-09T15:40:23.220161429Z"
