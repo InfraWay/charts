@@ -1,0 +1,28 @@
+{{- if .Values.dns }}
+{{- $issuer := printf "%s-%s-%s-%s" (include "letsencrypt-issuers.fullname" .) "dns" "pr" "prod" -}}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ $issuer }}
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: {{ .Values.email.dev }}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: {{ $issuer }}
+    # ACME DNS-01 provider configurations
+    solvers:
+      # Here we define a list of DNS-01 providers that can solve DNS challenges
+      - dns01:
+          {{- if .Values.dns.cloudflare }}
+          cloudflare:
+            email: {{ .Values.dns.cloudflare.email }}
+            apiTokenSecretRef:
+              name: {{ include "letsencrypt-issuers.cloudflare" .}}
+              key: token
+          {{- end }}
+{{- end }}
