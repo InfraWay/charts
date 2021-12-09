@@ -77,4 +77,14 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/gh-deploy-bot-0.1.0/gh-deploy-bot-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-30T08:08:19.274480067Z"
+  letsencrypt-issuers:
+  - apiVersion: v2
+    created: "2021-12-09T15:35:59.813849818Z"
+    description: A Helm chart for Kubernetes
+    digest: 004a3bd7a78c988ce54f9623a702ef630c26615f57b1e6da68f24489e7fe837d
+    name: letsencrypt-issuers
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/letsencrypt-issuers-0.1.0/letsencrypt-issuers-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-12-09T15:35:59.81388222Z"
