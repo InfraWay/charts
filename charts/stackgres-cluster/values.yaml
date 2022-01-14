@@ -1,3 +1,6 @@
+ingress:
+  host: stackgres.plyo.tech
+
 cluster:
   create: false
   # restart: true
