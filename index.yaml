@@ -97,4 +97,30 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/letsencrypt-issuers-0.1.0/letsencrypt-issuers-0.1.0.tgz
     version: 0.1.0
-generated: "2021-12-09T15:40:23.220161429Z"
+  stackgres-cluster:
+  - apiVersion: v2
+    appVersion: 1.1.0-SNAPSHOT
+    created: "2022-01-14T20:06:14.118479264Z"
+    description: StackGres Cluster
+    digest: d4ce729d491873e09586d2303c2acd57fb6bc0621f5a594390428c420a525b1f
+    home: https://stackgres.io
+    icon: https://assets.gitlab-static.net/uploads/-/system/project/avatar/12584701/logo-stackgres.png?width=64
+    keywords:
+    - stackgres
+    - postgresql
+    - postgres
+    - cluster
+    - stack
+    - opinionated
+    kubeVersion: 1.16.0-0 - 1.22.x-0
+    maintainers:
+    - email: info@ongres.com
+      name: OnGres Inc.
+      url: https://ongres.com
+    name: stackgres-cluster
+    sources:
+    - https://gitlab.com/ongresinc/stackgres
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/stackgres-cluster-1.1.0-SNAPSHOT/stackgres-cluster-1.1.0-SNAPSHOT.tgz
+    version: 1.1.0-SNAPSHOT
+generated: "2022-01-14T20:06:14.118591768Z"
