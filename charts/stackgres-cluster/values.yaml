@@ -1,0 +1,249 @@
+cluster:
+  create: false
+  # restart: true
+  # restartRole:
+  restartClusterRole: cluster-admin
+  restartReducedImpact: true
+  restartPrimaryFirst: false
+  restartTimeout: 300
+  instances: 1
+  postgres:
+    version: "latest"
+    #flavor:
+    #extensions:
+    #  - name: timescaledb      # The extension name
+    #    publisher: com.ongres  # Optional. The extension publisher
+    #    version: "1.7.1"       # Optional. The extension version or channel
+    #    repository: https://extensions.stackgres.io/postgres/repository # Optional. The extension repository
+    ssl:
+      enabled: false
+      # certificateSecretKeySelector:
+      #   name:
+      #   key:
+      # privateKeySecretKeySelector:
+      #   name:
+      #   key:
+  sgInstanceProfile: size-xs
+  postgresServices:
+    primary:
+      enabled: true
+      type: ClusterIP
+    replicas:
+      enabled: true
+      type: ClusterIP
+  # metadata:
+  #   annotations:
+  #     allResources:
+  #       key: value
+  #     clusterPods:
+  #       key: value
+  #     services:
+  #       key: value
+  #     primaryService:
+  #       key: value
+  #     replicasService:
+  #       key: value
+  #   labels:
+  #     clusterPods:
+  #       key: value
+  pods:
+    persistentVolume:
+      size: 5Gi
+      ## If defined, storageClass: <storageClass>
+      ## If set to "-", storageClass: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClass spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      # storageClass: "-"
+    disableConnectionPooling: false
+    disablePostgresUtil: false
+    disableMetricsExporter: false
+    # scheduling:
+    #   nodeSelector:
+    #     key: value
+    #   nodeAffinity:
+    #     preferredDuringSchedulingIgnoredDuringExecution:
+    #       - weight:
+    #         preference:
+    #           - matchExpressions:
+    #             - key:
+    #               operator:
+    #               values:
+    #                 - another-value
+    #     requiredDuringSchedulingIgnoredDuringExecution:
+    #       nodeSelectorTerms:
+    #       - matchExpressions:
+    #         - key:
+    #           operator:
+    #           values:
+    #             - another-value
+    #   tolerations:
+    #     - key:
+    #       operator:
+    #       value:
+    #       effect:
+    #       tolerationSeconds:
+  configurations:
+    sgPostgresConfig: postgresconf
+    sgPoolingConfig: pgbouncerconf
+  distributedLogs:
+    sgDistributedLogs: distributedlogs
+    retention: 7 days
+  #restore:
+  #  initialData:
+  #    fromBackup:
+  #      uid:
+  #      pointInTimeRecovery:
+  #        restoreToTimestamp:
+  #    downloadDiskConcurrency:
+  #  scripts:
+  #  - name: create-stackgres-user
+  #    scriptFrom:
+  #      secretKeyRef: # read the user from a Secret to maintain credentials in a safe place
+  #        name: stackgres-secret-sqls-scripts
+  #        key: create-stackgres-user.sql
+  #  - name: create-stackgres-database
+  #    script: |
+  #      CREATE DATABASE stackgres WITH OWNER stackgres;
+  #  - name: create-stackgres-schema
+  #    database: stackgres
+  #    scriptFrom:
+  #      configMapKeyRef: # read long script from a ConfigMap to avoid have to much data in the helm releasea and the sgcluster CR
+  #        name: stackgres-sqls-scripts
+  #        key: create-stackgres-schema.sql
+  prometheusAutobind: true
+
+instanceProfiles:
+  - name: size-xs
+    cpu: "500m"
+    memory: "512Mi"
+  - name: size-s
+    cpu: "1"
+    memory: "2Gi"
+  - name: size-m
+    cpu: "2"
+    memory: "4Gi"
+  - name: size-l
+    cpu: "4"
+    memory: "8Gi"
+  - name: size-xl
+    cpu: "6"
+    memory: "16Gi"
+  - name: size-xxl
+    cpu: "8"
+    memory: "32Gi"
+
+configurations:
+  create: true
+  postgresconfig:
+    postgresql.conf:
+      shared_buffers: "256MB"
+      random_page_cost: "1.5"
+      password_encryption: "scram-sha-256"
+      checkpoint_timeout: "30"
+  poolingconfig:
+    pgBouncer:
+      pgbouncer.ini:
+        pool_mode: transaction
+        max_client_conn: "200"
+        default_pool_size: "50"
+  backupconfig:
+    create: false
+    baseBackups:
+      retention: 5
+      cronSchedule: "*/2 * * * *"
+      compression: lz4
+      performance:
+        uploadDiskConcurrency: 1
+        #maxNetworkBandwitdh:
+        #maxDiskBandwitdh:
+    storage:
+      s3: {}
+      #  bucket: stackgres
+      #  path: /mypath
+      #  awsCredentials:
+      #    secretKeySelectors:
+      #      accessKeyId:
+      #        name: awscredentials
+      #        key: accesskey
+      #      secretAccessKey:
+      #        name: awscredentials
+      #        key: secretkey
+      #  region:
+      #  storageClass:
+      s3Compatible: {}
+      #  bucket: stackgres
+      #  path: /mypath
+      #  awsCredentials:
+      #    secretKeySelectors:
+      #      accessKeyId:
+      #        name: minio
+      #        key: accesskey
+      #      secretAccessKey:
+      #        name: minio
+      #        key: secretkey
+      #  region: k8s
+      #  endpoint: minio.stackgres.svc
+      #  enablePathStyleAddressing: true
+      #  storageClass:
+      gcs: {}
+      #  bucket: stackgres
+      #  path: /mypath
+      #  gcpCredentials:
+      #    fetchCredentialsFromMetadataService: false
+      #    secretKeySelectors:
+      #      serviceAccountJSON:
+      #        name: gcscredentials
+      #        key: key
+      azureBlob: {}
+      #  bucket: stackgres
+      #  path: /mypath
+      #  azureCredentials:
+      #    secretKeySelectors:
+      #      storageAccount:
+      #        name: azureblobcredentials
+      #        key: storageaccount
+      #      accessKey:
+      #        name: azureblobcredentials
+      #        key: accesskey
+
+distributedLogs:
+  enabled: false
+  create: true
+  persistentVolume:
+    size: 5Gi
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    #  storageClass: "-"
+  postgresServices:
+    primary:
+      type: ClusterIP
+    replicas:
+      enabled: true
+      type: ClusterIP
+  # scheduling:
+  #   nodeSelector:
+  #     key: value
+  #   tolerations:
+  #     - key:
+  #       operator:
+  #       value:
+  #       effect:
+  #       tolerationSeconds:
+  # metadata:
+  #   annotations:
+  #     allResources:
+  #       key: value
+  #     pods:
+  #       key: value
+  #     services:
+  #       key: value
+
+#You should only set following options for non production environment
+nonProductionOptions:
+  disableClusterPodAntiAffinity: false
+  # enabledFeatureGates:
+  # - babelfish-flavor

@@ -1,0 +1,34 @@
+{{ if .Values.configurations.create }}
+apiVersion: stackgres.io/v1
+kind: SGPostgresConfig
+metadata:
+  name: {{ .Values.cluster.configurations.sgPostgresConfig }}
+  {{- if and .Release.IsInstall .Values.cluster.create }}
+  annotations:
+    helm.sh/hook: "pre-install"
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/managed-by: "Helm"
+  {{- end }}
+spec:
+  {{- if eq .Values.cluster.postgres.version "latest" }}
+  {{- if .Values.cluster.postgres.flavor }}
+  {{- if eq .Values.cluster.postgres.flavor "babelfish" }}
+  postgresVersion: "13"
+  {{- else }}
+  postgresVersion: "14"
+  {{- end }}
+  {{- else }}
+  postgresVersion: "14"
+  {{- end }}
+  {{- else }}
+  postgresVersion: "{{ index (.Values.cluster.postgres.version | splitList ".") 0 }}"
+  {{- end }}
+  {{- with (index .Values.configurations.postgresconfig "postgresql.conf") }}
+  postgresql.conf:
+  {{- range $key, $value := . }}
+    {{ $key }}: '{{ $value }}'
+  {{- end }}
+  {{- end }}
+{{ end }}

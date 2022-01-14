@@ -1,0 +1,281 @@
+{{ if .Values.cluster.create }}
+apiVersion: stackgres.io/v1
+kind: SGCluster
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  instances: {{ .Values.cluster.instances }}
+  postgres:
+    version: '{{ .Values.cluster.postgres.version }}'
+    {{- if .Values.cluster.postgres.flavor }}
+    flavor: {{ .Values.cluster.postgres.flavor }}
+    {{- end }}
+    {{- if not .Values.cluster.postgres.extensions }}
+    extensions: []
+    {{- else }}
+    {{- if eq (len .Values.cluster.postgres.extensions) 0 }}
+    extensions: []
+    {{- else }}
+    extensions:
+    {{- range .Values.cluster.postgres.extensions }}
+      - name: "{{ .name }}"
+        {{- if .publisher }}
+        publisher: "{{ .publisher }}"
+        {{- end }}
+        {{- if .version }}
+        version: "{{ .version }}"
+        {{- end }}
+        {{- if .repository }}
+        repository: "{{ .repository }}"
+        {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.cluster.postgres.ssl }}
+    ssl:
+      enabled: {{ .Values.cluster.postgres.ssl.enabled }}
+      {{- if .Values.cluster.postgres.ssl.certificateSecretKeySelector }}
+      certificateSecretKeySelector:
+        name: {{ .Values.cluster.postgres.ssl.certificateSecretKeySelector.name }}
+        key: {{ .Values.cluster.postgres.ssl.certificateSecretKeySelector.key }}
+      {{- end }}
+      {{- if .Values.cluster.postgres.ssl.privateKeySecretKeySelector }}
+      privateKeySecretKeySelector:
+        name: {{ .Values.cluster.postgres.ssl.privateKeySecretKeySelector.name }}
+        key: {{ .Values.cluster.postgres.ssl.privateKeySecretKeySelector.key }}
+      {{- end }}
+    {{- end }}
+  configurations: 
+    sgPostgresConfig: '{{ .Values.cluster.configurations.sgPostgresConfig }}'
+    sgPoolingConfig: '{{ .Values.cluster.configurations.sgPoolingConfig }}'
+    {{- if .Values.cluster.configurations.sgBackupConfig }}
+    sgBackupConfig: '{{ .Values.cluster.configurations.sgBackupConfig }}'
+    {{- end }}
+  sgInstanceProfile: '{{ .Values.cluster.sgInstanceProfile }}'
+  {{- if .Values.cluster.initialData }}
+  {{- if or .Values.cluster.initialData.restore .Values.cluster.initialData.scripts }}
+  initialData:
+  {{- end }}
+  {{- if .Values.cluster.initialData.restore }}
+    restore:
+      fromBackup:
+        uid: {{ .Values.cluster.initialData.restore.fromBackup.uid }}
+        {{- if .Values.cluster.initialData.restore.fromBackup.pointInTimeRecovery }}
+        pointInTimeRecovery:
+          restoreToTimestamp: {{ .Values.cluster.initialData.restore.fromBackup.pointInTimeRecovery.restoreToTimestamp }}
+        {{- end }}
+      {{- if .Values.cluster.initialData.restore.downloadDiskConcurrency }}
+      downloadDiskConcurrency: {{ .Values.cluster.initialData.restore.downloadDiskConcurrency }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.cluster.initialData.scripts }}
+    scripts:
+  {{- range .Values.cluster.initialData.scripts }}
+    - {{- if .name }}
+      name: {{ .name }}
+      {{- end }}
+      {{- if .database }}
+      database: {{ .database }}
+      {{- end }}
+      {{- if .script }}
+      script: {{ .script }}
+      {{- end }}
+      {{- if .scriptFrom }}
+      {{- if or .scriptFrom.secretKeyRef .scriptFrom.configMapKeyRef }}
+      scriptFrom:
+        {{- if .scriptFrom.secretKeyRef }}
+        secretKeyRef:
+          name: {{ .scriptFrom.secretKeyRef.name }}
+          key: {{ .scriptFrom.secretKeyRef.key }}
+        {{- end }}
+        {{- if .scriptFrom.configMapKeyRef }}
+        configMapKeyRef:
+          name: {{ .scriptFrom.configMapKeyRef.name }}
+          key: {{ .scriptFrom.configMapKeyRef.key }}
+        {{- end }}
+      {{- end }}
+      {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.cluster.postgresServices }}
+  postgresServices:
+    {{- if .Values.cluster.postgresServices.primary }}
+    primary:
+      enabled: {{ .Values.cluster.postgresServices.primary.enabled }}
+      {{- if .Values.cluster.postgresServices.primary.type }}
+      type:  {{ .Values.cluster.postgresServices.primary.type }}
+      {{- end }}
+      {{- if .Values.cluster.postgresServices.primary.externalIPs }}
+      externalIPs:
+        {{-  range .Values.cluster.postgresServices.primary.externalIPs }}
+          - {{ . }}
+        {{- end }}
+      {{- end }}
+    {{- end }}    
+    {{- if .Values.cluster.postgresServices.replicas }}
+    replicas:
+      enabled: {{ .Values.cluster.postgresServices.replicas.enabled }}
+      {{- if .Values.cluster.postgresServices.replicas.type }}
+      type:  {{ .Values.cluster.postgresServices.replicas.type }}
+      {{- end }}
+      {{- if .Values.cluster.postgresServices.replicas.externalIPs }}
+      externalIPs:
+        {{-  range .Values.cluster.postgresServices.replicas.externalIPs }}
+          - {{ . }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cluster.postgresServices.replicas.annotations }}
+      annotations:
+        {{- range $annot, $value := .Values.cluster.postgresServices.replicas.annotations }}
+        {{ $annot }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+    {{- end }}    
+  {{- end }}
+  {{- if .Values.cluster.metadata }}
+  metadata:
+    {{- if .Values.cluster.metadata.annotations }}
+    annotations:
+      {{- if .Values.cluster.metadata.annotations.allResources }}
+      allResources: 
+        {{- range $annot, $value := .Values.cluster.metadata.annotations.allResources }}
+        {{ $annot }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cluster.metadata.annotations.clusterPods }}
+      clusterPods:
+        {{- range $annot, $value := .Values.cluster.metadata.annotations.clusterPods }}
+        {{ $annot }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cluster.metadata.annotations.services }}
+      services:
+        {{- range $annot, $value := .Values.cluster.metadata.annotations.services }}
+        {{ $annot }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cluster.metadata.annotations.primaryService }}
+      primaryService:
+        {{- range $annot, $value := .Values.cluster.metadata.annotations.primaryService }}
+        {{ $annot }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cluster.metadata.annotations.replicasService }}
+      replicasService:
+        {{- range $annot, $value := .Values.cluster.metadata.annotations.replicasService }}
+        {{ $annot }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if .Values.cluster.metadata.labels }}
+    labels:
+      {{- if .Values.cluster.metadata.labels.clusterPods }}
+      clusterPods:
+        {{- range $label, $value := .Values.cluster.metadata.labels.clusterPods }}
+        {{ $label }}: {{ $value }}
+        {{- end }}  
+      {{- end }}
+    {{- end }} 
+  {{- end }}
+  pods:
+    persistentVolume:
+      size: '{{ .Values.cluster.pods.persistentVolume.size }}'
+      {{- if .Values.cluster.pods.persistentVolume.storageClass }}
+      {{- if eq "-" .Values.cluster.pods.persistentVolume.storageClass }}
+      storageClass: ""
+      {{- else }}
+      storageClass: {{ .Values.cluster.pods.persistentVolume.storageClass }}
+      {{- end }}
+      {{- end }}
+    disableConnectionPooling: {{ .Values.cluster.pods.disableConnectionPooling }}
+    disablePostgresUtil: {{ .Values.cluster.pods.disablePostgresUtil }}
+    disableMetricsExporter: {{ .Values.cluster.pods.disableMetricsExporter }}
+    {{- if .Values.cluster.pods.scheduling }}
+    scheduling:
+      {{- if .Values.cluster.pods.scheduling.nodeAffinity }}
+      nodeAffinity:
+        {{- if .Values.cluster.pods.scheduling.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution }}
+        requiredDuringSchedulingIgnoredDuringExecution:
+          {{- if .Values.cluster.pods.scheduling.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms }}
+          nodeSelectorTerms:
+            {{- range .Values.cluster.pods.scheduling.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms }}
+              {{- if .matchExpressions }}
+              - matchExpressions:
+                {{- range .matchExpressions }}  
+                - key: {{ .key }}
+                  operator: {{ .operator }}
+                  {{- if .values }}
+                  values:
+                    {{-  range .values }}
+                    - {{ . }}
+                    {{- end }}
+                  {{- end }}
+                {{- end }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.cluster.pods.scheduling.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution }}
+        preferredDuringSchedulingIgnoredDuringExecution:
+          {{- range .Values.cluster.pods.scheduling.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution }}
+            {{- if .preference }}
+            - weight: {{ .weight }}
+              preference:
+              {{- if .preference.matchExpressions }}
+                matchExpressions:
+                  {{- range .preference.matchExpressions }}
+                  - key: {{ .key }}
+                    operator: {{ .operator }}
+                    {{- if .values }}
+                    values:
+                      {{-  range .values }}
+                      - {{ . }}
+                      {{- end }}
+                    {{- end }}
+                  {{- end }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cluster.pods.scheduling.nodeSelector }}
+      nodeSelector:
+        {{- range $label, $value := .Values.cluster.pods.scheduling.nodeSelector }}
+        {{ $label }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.cluster.pods.scheduling.tolerations }}
+      tolerations:
+        {{- range .Values.cluster.pods.scheduling.tolerations }}
+        - effect: {{ .effect }}
+          key: {{ .key }}
+          operator: {{ .operator }}
+          value: {{ .value }}
+          tolerationSeconds: {{ .tolerationSeconds }}
+        {{- end }}
+      {{- end }}
+    {{- end }} 
+  {{- if .Values.distributedLogs.enabled }}
+  distributedLogs:
+    sgDistributedLogs: {{ .Values.cluster.distributedLogs.sgDistributedLogs }}
+    {{- if .Values.cluster.distributedLogs.retention }}
+    retention: {{ .Values.cluster.distributedLogs.retention }}
+    {{- end }}
+  {{- end }}
+  prometheusAutobind: {{ .Values.cluster.prometheusAutobind }}
+  {{- if .Values.nonProductionOptions }}
+  nonProductionOptions:
+  {{- if not .Values.nonProductionOptions.disableClusterPodAntiAffinity }}
+    disableClusterPodAntiAffinity: false
+  {{- else }}
+    disableClusterPodAntiAffinity: {{ .Values.nonProductionOptions.disableClusterPodAntiAffinity }}
+  {{- end }}
+  {{- if .Values.nonProductionOptions.enabledFeatureGates }}
+    enabledFeatureGates:
+  {{- range .Values.nonProductionOptions.enabledFeatureGates }}
+    - '{{ . }}'
+  {{- end }}
+  {{- end }}
+  {{- end }}
+{{ end }}
