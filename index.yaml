@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   actions-runner:
   - apiVersion: v2
+    created: "2022-04-13T22:43:21.77092745Z"
+    description: Helm chart deploying GitHub actions runners
+    digest: 06e38b271d6c54c992e1e6f2a34c7c644e9bd5c69fa3a1269c641ea75270f870
+    name: actions-runner
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/actions-runner-0.2.1/actions-runner-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
     created: "2022-04-13T22:16:16.628468636Z"
     description: Helm chart deploying GitHub actions runners
     digest: e78b7c6bc2240214085183622121085ca6e11e530afb9e29104235e634859c61
@@ -166,4 +175,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/stackgres-cluster-1.1.0-SNAPSHOT/stackgres-cluster-1.1.0-SNAPSHOT.tgz
     version: 1.1.0-SNAPSHOT
-generated: "2022-04-13T22:16:16.628544936Z"
+generated: "2022-04-13T22:43:21.77096505Z"
