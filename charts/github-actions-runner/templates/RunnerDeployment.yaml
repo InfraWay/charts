@@ -13,6 +13,9 @@ spec:
       {{- end }}
       labels:
         {{- toYaml .Values.labels | nindent 8 }}
+      resources:
+        {{- toYaml .Values.resources | nindent 8 }}
+      dockerEnabled: {{ .Values.dockerEnabled }}
       dockerdWithinRunnerContainer: {{ .Values.dockerdWithinRunnerContainer }}
       image: {{ .Values.image }}
       env:
