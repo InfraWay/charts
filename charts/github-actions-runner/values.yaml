@@ -16,10 +16,10 @@ image: infraway/github-actions-runner:dind
 
 resources:
   limits:
-    cpu: "2000"
+    cpu: "1000"
     memory: "2Gi"
   requests:
-    cpu: "250"
+    cpu: "125"
     memory: "512Mi"
 # true (default) = A privileged docker sidecar container is included in the runner pod.
 # false = A docker sidecar container is not included in the runner pod and you can't use docker.
