@@ -136,6 +136,31 @@ entries:
   stackgres-cluster:
   - apiVersion: v2
     appVersion: 1.1.0
+    created: "2022-04-21T20:23:58.79456008Z"
+    description: StackGres Cluster
+    digest: dcc0f2eb1d80b7a8bf4f192f142c6d1259fefc3861bfff85178ef6a7de87196c
+    home: https://stackgres.io
+    icon: https://assets.gitlab-static.net/uploads/-/system/project/avatar/12584701/logo-stackgres.png?width=64
+    keywords:
+    - stackgres
+    - postgresql
+    - postgres
+    - cluster
+    - stack
+    - opinionated
+    kubeVersion: 1.16.0-0 - 1.22.x-0
+    maintainers:
+    - email: info@ongres.com
+      name: OnGres Inc.
+      url: https://ongres.com
+    name: stackgres-cluster
+    sources:
+    - https://gitlab.com/ongresinc/stackgres
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/stackgres-cluster-1.1.1/stackgres-cluster-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
+    appVersion: 1.1.0
     created: "2022-01-14T20:13:36.007612187Z"
     description: StackGres Cluster
     digest: 2a5d1bc33b86a49b7189fe78c0d39e0ba39f7885b4331ebd55f075a229f781b6
@@ -184,4 +209,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/stackgres-cluster-1.1.0-SNAPSHOT/stackgres-cluster-1.1.0-SNAPSHOT.tgz
     version: 1.1.0-SNAPSHOT
-generated: "2022-04-13T23:00:29.714453796Z"
+generated: "2022-04-21T20:23:58.794828499Z"
