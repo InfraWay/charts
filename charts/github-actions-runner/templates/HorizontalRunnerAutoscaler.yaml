@@ -10,6 +10,7 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   scaleUpTriggers:
-    - githubEvent: {}
+    - githubEvent:
+        workflowJob: {}
       duration: {{ .Values.autoscaling.duration }}
 {{- end }}
