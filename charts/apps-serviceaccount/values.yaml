@@ -11,6 +11,8 @@ serviceAccount:
   name: "internal-app"
 
 registries: []
-#  username: "_json_key"
-#  password: ""
-#  host: ""
+#  - username: "_json_key"
+#    password: ""
+#    host: ""
+
+extra_secrets: []
