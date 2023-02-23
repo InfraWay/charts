@@ -113,6 +113,15 @@ entries:
     version: 0.1.0
   apps-serviceaccount:
   - apiVersion: v2
+    created: "2023-02-23T12:27:05.856557229Z"
+    description: Chart creates service account and secret with docker registry access
+    digest: b5c874a2c9ba09bce76abd22e53f0c18b8d5273c92327bd5244507aaca3ca427
+    name: apps-serviceaccount
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/apps-serviceaccount-0.2.0/apps-serviceaccount-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2021-12-09T15:40:23.220135128Z"
     description: Chart creates service account and secret with docker registry access
     digest: f981a4f0a71506909081a49330da6ddf87de91edbc90a0ad48cda2a19df08be9
@@ -261,4 +270,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/stackgres-cluster-1.1.0-SNAPSHOT/stackgres-cluster-1.1.0-SNAPSHOT.tgz
     version: 1.1.0-SNAPSHOT
-generated: "2022-12-14T12:03:01.753190996Z"
+generated: "2023-02-23T12:27:05.85660563Z"
