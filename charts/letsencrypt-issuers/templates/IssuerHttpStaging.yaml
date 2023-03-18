@@ -1,4 +1,4 @@
-{{- $issuer := printf "%s-%s-%s" (include "letsencrypt-issuers.fullname" .) "dns" "staging" -}}
+{{- $issuer := printf "%s-%s-%s" (include "letsencrypt-issuers.fullname" .) "http" "staging" -}}
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
