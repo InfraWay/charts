@@ -113,6 +113,16 @@ entries:
     version: 0.1.0
   apps-serviceaccount:
   - apiVersion: v2
+    appVersion: 0.3.0
+    created: "2023-03-18T23:55:42.887367603Z"
+    description: Chart creates service account and secret with docker registry access
+    digest: 80ae020ea6c5807915cfe7943b5d828a265ce9b0bee62b450bcdbf3a15cd5014
+    name: apps-serviceaccount
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/apps-serviceaccount-0.3.0/apps-serviceaccount-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     created: "2023-02-23T12:27:05.856557229Z"
     description: Chart creates service account and secret with docker registry access
     digest: b5c874a2c9ba09bce76abd22e53f0c18b8d5273c92327bd5244507aaca3ca427
@@ -160,6 +170,16 @@ entries:
     - https://github.com/InfraWay/helm/releases/download/gh-deploy-bot-0.1.0/gh-deploy-bot-0.1.0.tgz
     version: 0.1.0
   letsencrypt-issuers:
+  - apiVersion: v2
+    appVersion: 0.1.1
+    created: "2023-03-18T23:55:43.024194582Z"
+    description: A Helm chart for Kubernetes
+    digest: 02721040b27201e8f450b6ea84c23d86c7e0c75bf5cba26e4847099b66e1239d
+    name: letsencrypt-issuers
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/letsencrypt-issuers-0.1.1/letsencrypt-issuers-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     created: "2021-12-09T15:35:59.813849818Z"
     description: A Helm chart for Kubernetes
@@ -270,4 +290,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/stackgres-cluster-1.1.0-SNAPSHOT/stackgres-cluster-1.1.0-SNAPSHOT.tgz
     version: 1.1.0-SNAPSHOT
-generated: "2023-02-23T12:27:05.85660563Z"
+generated: "2023-03-18T23:55:43.024280883Z"
