@@ -1,0 +1,55 @@
+replicaCount: 1
+
+config:
+  timeZone: Europe/Helsinki
+  serverUrl: "vpn.example.com"
+  peers: "1"
+  allowedIPs: "10.0.0.0/8"
+  internalSubnet: "10.13.13.0/24"
+  logConfs: "false"
+
+image:
+  registry: linuxserver/wireguard
+  pullPolicy: IfNotPresent
+  tag: "1.0.20210914"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext:
+  capabilities:
+    add:
+      - NET_ADMIN
+
+persistence:
+  storageClassName: standard-rwo
+  storageSize: 10M
+
+service:
+  type: LoadBalancer
+  port: 51820
+
+env: []
+
+resources:
+  requests:
+    memory: 64Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+    cpu: 500m
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

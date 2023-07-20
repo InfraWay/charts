@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "wireguard.fullname" . }}
+  labels:
+    {{- include "wireguard.labels" . | nindent 4 }}
+data:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: {{ .Values.config.timeZone }}
+  SERVERURL: {{ .Values.config.serverUrl }}
+  SERVERPORT: "51820"
+  PEERS: {{ .Values.config.peers | quote }}
+  ALLOWEDIPS: {{ .Values.config.allowedIPs | quote }}
+  INTERNAL_SUBNET: {{ .Values.config.internalSubnet | quote }}
+  LOG_CONFS: {{ .Values.config.logConfs | quote }}
