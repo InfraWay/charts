@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  replicas: {{ .Values.app.deployment.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.app.api.deployment.image.repository }}:{{ .Values.app.api.deployment.image.tag }}
+          resources:
+            limits:
+              cpu: {{ .Values.app.api.deployment.resources.limits.cpu }}
+            requests:
+              cpu: {{ .Values.app.api.deployment.resources.requests.cpu }}
+          ports:
+            - containerPort: {{ .Values.app.api.service.ports.port }}
+          command:
+            - node
+            - server.js
+          env:
+            - name: DB_HOST
+              value: {{ .Values.postgres.name }}
+            - name: DB_PORT
+              value: "{{ .Values.postgres.service.port }}"
+            - name: DB_USER
+              value: {{ .Values.app.name }}
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.cookieSecret }}
+                  key: cookieSecret
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.dbPass }}
+                  key: appUserPassword
+        - name: site
+          image: {{ .Values.app.site.deployment.image.repository }}:{{ .Values.app.site.deployment.image.tag }}
+          resources:
+            limits:
+              cpu: {{ .Values.app.site.deployment.resources.limits.cpu }}
+            requests:
+              cpu: {{ .Values.app.site.deployment.resources.requests.cpu }}
+          ports:
+            - name: {{ .Values.app.site.service.ports.site.name }}
+              containerPort: {{ .Values.app.site.service.ports.site.port }}
+            - name: {{ .Values.app.site.service.ports.sftp.name }}
+              containerPort: {{ .Values.app.site.service.ports.sftp.port }}
+      volumes:
+        - name: pano-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.volumes.pvc.name }}
+        - name: nginx-config
+          configMap:
+            name: {{ .Values.volumes.configMapName}}
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+      imagePullSecrets:
+        - name: regcred
