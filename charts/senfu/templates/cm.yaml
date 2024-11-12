@@ -132,7 +132,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: base-kubegres-config
+  name: {{ .Values.postgres.cm.base.name }}
 data:
   postgres.conf: |
     max_connections = 100

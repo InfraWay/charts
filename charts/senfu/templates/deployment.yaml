@@ -35,12 +35,12 @@ spec:
             - name: COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.cookieSecret }}
+                  name: {{ .Values.app.secret.name }}
                   key: cookieSecret
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.dbPass }}
+                  name: {{ .Values.postgres.secret.name }}
                   key: appUserPassword
         - name: site
           image: {{ .Values.app.site.deployment.image.repository }}:{{ .Values.app.site.deployment.image.tag }}
@@ -54,6 +54,14 @@ spec:
               containerPort: {{ .Values.app.site.service.ports.site.port }}
             - name: {{ .Values.app.site.service.ports.sftp.name }}
               containerPort: {{ .Values.app.site.service.ports.sftp.port }}
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: nginx-config
+              subPath: nginx.conf
+              readOnly: false
+            - mountPath: /mnt/pano
+              name: pano-storage
+              readOnly: false
       volumes:
         - name: pano-storage
           persistentVolumeClaim:
@@ -64,5 +72,5 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
-      imagePullSecrets:
-        - name: regcred
+{{/*      imagePullSecrets:*/}}
+{{/*        - name: regcred*/}}

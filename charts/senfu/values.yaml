@@ -1,13 +1,19 @@
 postgres:
   name: postgres
-  secretName: pg-secret
-  user: postgres
-  password: mysecretpassword
-  superUserPassword: superSecretAdminPassword
-  replicationUserPassword: replicationUserPassword
-  adminUserPassword: adminUserPassword
-  appUserPassword: appUserPassword
-  db: mydatabase
+  secret:
+    name: pg-secret
+    user: postgres
+    password: mysecretpassword
+    superUserPassword: superSecretAdminPassword
+    replicationUserPassword: replicationUserPassword
+    adminUserPassword: adminUserPassword
+    appUserPassword: appUserPassword
+    db: mydatabase
+  cm:
+    base:
+      name: base-kubegres-config
+    custom:
+      name: postgres-conf
   statefulSet:
     image: postgres:14.1
     replicaCount: 1
@@ -22,7 +28,7 @@ app:
   api:
     deployment:
       image:
-        repository: ghcr.io/senfu-labs/senfu
+        repository: senfu
         tag: api-1.2.0
       resources:
         limits:
@@ -37,7 +43,7 @@ app:
   site:
     deployment:
       image:
-        repository: ghcr.io/senfu-labs/senfu
+        repository: senfu
         tag: site-1.6.0
       resources:
         limits:
@@ -52,10 +58,9 @@ app:
         sftp:
           name: sftp-port
           port: 2300
-
-secrets:
-  dbPass: pg-secret
-  cookieSecret: app-secrets
+  secret:
+    name: app-secrets
+    cookieSecret: cookieSecret
 
 volumes:
   pv:

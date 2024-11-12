@@ -44,26 +44,26 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.dbPass }}
+                  name: {{ .Values.postgres.secret.name }}
                   key: superUserPassword
             - name: POSTGRES_REPLICATION_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.dbPass }}
+                  name: {{ .Values.postgres.secret.name }}
                   key: replicationUserPassword
             - name: ADMIN_ROLE_NAME
               value: admin
             - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.dbPass }}
+                  name: {{ .Values.postgres.secret.name }}
                   key: adminUserPassword
             - name: APP_ROLE_NAME
               value: {{ .Values.app.name }}
             - name: APP_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.dbPass }}
+                  name: {{ .Values.postgres.secret.name }}
                   key: appUserPassword
             - name: DB_NAME
               value: senfu
@@ -106,11 +106,11 @@ spec:
       volumes:
         - name: base-config
           configMap:
-            name: base-kubegres-config
+            name: {{ .Values.postgres.cm.base.name }}
             defaultMode: 511
         - name: custom-config
           configMap:
-            name: postgres-conf
+            name: {{ .Values.postgres.cm.custom.name }}
             defaultMode: 511
   volumeClaimTemplates:
     - metadata:
