@@ -128,3 +128,11 @@ data:
             }
         }
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: base-kubegres-config
+data:
+  postgres.conf: |
+    max_connections = 100

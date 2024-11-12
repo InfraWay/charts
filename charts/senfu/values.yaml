@@ -1,5 +1,13 @@
 postgres:
   name: postgres
+  secretName: pg-secret
+  user: postgres
+  password: mysecretpassword
+  superUserPassword: superSecretAdminPassword
+  replicationUserPassword: replicationUserPassword
+  adminUserPassword: adminUserPassword
+  appUserPassword: appUserPassword
+  db: mydatabase
   statefulSet:
     image: postgres:14.1
     replicaCount: 1
@@ -50,7 +58,11 @@ secrets:
   cookieSecret: app-secrets
 
 volumes:
+  pv:
+    storage: 10Gi
+    storageClass: do-block-storage
   pvc:
-    name: pano-pv-claim
-    storage: 20Gi
+    name: postgres-db-postgres-0
+    storage: 10Gi
+    storageClass: do-block-storage
   configMapName: site-nginx-config
