@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
         - name: api
-          image: {{ .Values.app.api.deployment.image.repository }}:{{ .Values.app.api.deployment.image.tag }}
+          image: {{ .Values.app.containers.api.deployment.image.repository }}:{{ .Values.app.containers.api.deployment.image.tag }}
           resources:
             limits:
-              cpu: {{ .Values.app.api.deployment.resources.limits.cpu | quote }}
+              cpu: {{ .Values.app.containers.api.deployment.resources.limits.cpu | quote }}
             requests:
-              cpu: {{ .Values.app.api.deployment.resources.requests.cpu | quote }}
+              cpu: {{ .Values.app.containers.api.deployment.resources.requests.cpu | quote }}
           ports:
-            - containerPort: {{ .Values.app.api.service.ports.port }}
+            - containerPort: {{ .Values.app.containers.api.service.ports.port }}
           command:
             - node
             - server.js
@@ -43,15 +43,15 @@ spec:
                   key: appUserPassword
                   name: pg-secret
         - name: site
-          image: {{ .Values.app.site.deployment.image.repository }}:{{ .Values.app.site.deployment.image.tag }}
+          image: {{ .Values.app.containers.site.deployment.image.repository }}:{{ .Values.app.containers.site.deployment.image.tag }}
           resources:
             limits:
-              cpu: {{ .Values.app.site.deployment.resources.limits.cpu | quote }}
+              cpu: {{ .Values.app.containers.site.deployment.resources.limits.cpu | quote }}
             requests:
-              cpu: {{ .Values.app.site.deployment.resources.requests.cpu | quote }}
+              cpu: {{ .Values.app.containers.site.deployment.resources.requests.cpu | quote }}
           ports:
-            - name: {{ .Values.app.site.service.ports.site.name }}
-              containerPort: {{ .Values.app.site.service.ports.site.port }}
+            - name: {{ .Values.app.containers.site.service.ports.site.name }}
+              containerPort: {{ .Values.app.containers.site.service.ports.site.port }}
           volumeMounts:
             - mountPath: /etc/nginx/nginx.conf
               name: nginx-config

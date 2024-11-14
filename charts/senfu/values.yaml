@@ -4,36 +4,37 @@ db:
 
 app:
   name: app
+  containers:
+    api:
+      deployment:
+        image:
+          repository: ghcr.io/senfu-labs/senfu
+          tag: api-1.2.0
+        resources:
+          limits:
+            cpu: "0.5"
+          requests:
+            cpu: "0.2"
+      service:
+        ports:
+          port: 3000
+    site:
+      deployment:
+        image:
+          repository: ghcr.io/senfu-labs/senfu
+          tag: site-1.6.0
+        resources:
+          limits:
+            cpu: "0.5"
+          requests:
+            cpu: "0.2"
+      service:
+        ports:
+          site:
+            name: site-port
+            port: 80
   deployment:
     replicaCount: 1
-  api:
-    deployment:
-      image:
-        repository: ghcr.io/senfu-labs/senfu
-        tag: api-1.2.0
-      resources:
-        limits:
-          cpu: "0.5"
-        requests:
-          cpu: "0.2"
-    service:
-      ports:
-        port: 3000
-  site:
-    deployment:
-      image:
-        repository: ghcr.io/senfu-labs/senfu
-        tag: site-1.6.0
-      resources:
-        limits:
-          cpu: "0.5"
-        requests:
-          cpu: "0.2"
-    service:
-      ports:
-        site:
-          name: site-port
-          port: 80
   cm:
     host: senfu.tech
 
