@@ -27,21 +27,21 @@ spec:
             - server.js
           env:
             - name: DB_HOST
-              value: {{ .Values.postgres.name }}
+              value: {{ .Values.db.host }}
             - name: DB_PORT
-              value: "{{ .Values.postgres.service.port }}"
+              value: {{ .Values.db.port | quote }}
             - name: DB_USER
               value: {{ .Values.app.name }}
             - name: COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
                   key: cookieSecret
-                  name: {{ .Values.app.secret.name }}
+                  name: app-secrets
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
                   key: appUserPassword
-                  name: {{ .Values.postgres.secret.name }}
+                  name: pg-secret
         - name: site
           image: {{ .Values.app.site.deployment.image.repository }}:{{ .Values.app.site.deployment.image.tag }}
           resources:

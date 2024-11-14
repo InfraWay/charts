@@ -1,9 +1,6 @@
-postgres:
-  name: postgres
-  secret:
-    name: pg-secret
-  service:
-    port: 5432
+db:
+  host: postgres
+  port: 5432
 
 app:
   name: app
@@ -37,8 +34,6 @@ app:
         site:
           name: site-port
           port: 80
-  secret:
-    name: app-secrets
   cm:
     host: senfu.tech
 
