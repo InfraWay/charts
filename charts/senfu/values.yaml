@@ -45,3 +45,8 @@ volumes:
     name: pano-pv-claim
     storage: 20Gi
   configMapName: site-nginx-config
+
+externalSecrets:
+  enabled: false
+  secretStoreName: ""
+  secrets: []
