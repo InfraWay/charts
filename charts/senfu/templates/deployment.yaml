@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  replicas: {{ .Values.app.deployment.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.app.containers.api.deployment.image.repository }}:{{ .Values.app.containers.api.deployment.image.tag }}
+          resources:
+            limits:
+              cpu: {{ .Values.app.containers.api.deployment.resources.limits.cpu | quote }}
+            requests:
+              cpu: {{ .Values.app.containers.api.deployment.resources.requests.cpu | quote }}
+          ports:
+            - containerPort: {{ .Values.app.containers.api.service.ports.port }}
+          command:
+            - node
+            - server.js
+          env:
+            - name: DB_HOST
+              value: {{ .Values.db.host }}
+            - name: DB_PORT
+              value: {{ .Values.db.port | quote }}
+            - name: DB_USER
+              value: {{ .Values.app.name }}
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: cookieSecret
+                  name: app-secrets
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: appUserPassword
+                  name: pg-secret
+        - name: site
+          image: {{ .Values.app.containers.site.deployment.image.repository }}:{{ .Values.app.containers.site.deployment.image.tag }}
+          resources:
+            limits:
+              cpu: {{ .Values.app.containers.site.deployment.resources.limits.cpu | quote }}
+            requests:
+              cpu: {{ .Values.app.containers.site.deployment.resources.requests.cpu | quote }}
+          ports:
+            - name: {{ .Values.app.containers.site.service.ports.site.name }}
+              containerPort: {{ .Values.app.containers.site.service.ports.site.port }}
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: nginx-config
+              subPath: nginx.conf
+              readOnly: false
+            - mountPath: /mnt/pano
+              name: pano-storage
+              readOnly: false
+      volumes:
+        - name: pano-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.volumes.pvc.name }}
+        - name: nginx-config
+          configMap:
+            name: {{ .Values.volumes.configMapName }}
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+      imagePullSecrets:
+        - name: regcred

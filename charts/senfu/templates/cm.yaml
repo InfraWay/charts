@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.volumes.configMapName }}
+data:
+  nginx.conf: |
+    user                www-data;
+    worker_processes    auto;
+    error_log           /var/log/nginx/error.log;
+    pid                 /run/nginx.pid;
+    include             /etc/nginx/modules-enabled/*.conf;
+
+    events {
+        worker_connections      1024;
+    }
+
+    http {
+        root          /usr/share/nginx/html;
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+        '$status $body_bytes_sent "$http_referer" '
+        '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log              /var/log/nginx/access.log  main;
+
+        sendfile                on;
+        keepalive_timeout       65;
+        client_max_body_size    20M;
+
+        gzip                    on;
+        gzip_vary               on;
+        gzip_proxied            any;
+        gzip_http_version       1.1;
+        gzip_types              text/plain text/css application/json text/javascript application/javascript;
+
+        proxy_http_version      1.1;
+
+        resolver                kube-dns.kube-system.svc.cluster.local valid=5s ipv6=off;
+
+        server {
+            server_name         ~^www\.(?<domain>.+)$;
+            return              301 $scheme://$domain$request_uri;
+        }
+
+        server {
+            listen 80           default_server;
+            server_name         {{ .Values.app.cm.host }};
+            set                 $upstream http://localhost:3000;
+
+            location / {
+                try_files $uri /index.html;
+            }
+
+            location ~ /api/(.*) {
+                proxy_pass $upstream/$1$is_args$args;
+            }
+        }
+    }
