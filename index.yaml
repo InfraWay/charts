@@ -191,6 +191,15 @@ entries:
     version: 0.1.0
   senfu:
   - apiVersion: v2
+    created: "2024-11-14T20:55:24.934750208Z"
+    description: Helm chart for Senfu
+    digest: 33aa3152c111587292fd8afbcdcfaa3175bbea376b8b3edb5de72bf40a6d8de6
+    name: senfu
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/senfu-0.1.1/senfu-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2024-11-14T18:04:23.582562743Z"
     description: Helm chart for Senfu
     digest: cb329b0b659c0c03e129c53cf56a16c227bb18af418aab470bbdf597894d84e7
@@ -310,4 +319,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/wireguard-0.1.0/wireguard-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-14T18:04:23.582654012Z"
+generated: "2024-11-14T20:55:24.934828246Z"
