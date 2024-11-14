@@ -189,6 +189,16 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/letsencrypt-issuers-0.1.0/letsencrypt-issuers-0.1.0.tgz
     version: 0.1.0
+  senfu:
+  - apiVersion: v2
+    created: "2024-11-14T18:04:23.582562743Z"
+    description: Helm chart for Senfu
+    digest: cb329b0b659c0c03e129c53cf56a16c227bb18af418aab470bbdf597894d84e7
+    name: senfu
+    type: application
+    urls:
+    - https://github.com/InfraWay/helm/releases/download/senfu-0.1.0/senfu-0.1.0.tgz
+    version: 0.1.0
   stackgres-cluster:
   - apiVersion: v2
     appVersion: 1.4.0
@@ -300,4 +310,4 @@ entries:
     urls:
     - https://github.com/InfraWay/helm/releases/download/wireguard-0.1.0/wireguard-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-20T20:13:11.295043388Z"
+generated: "2024-11-14T18:04:23.582654012Z"
