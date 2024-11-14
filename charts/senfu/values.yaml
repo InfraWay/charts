@@ -2,24 +2,8 @@ postgres:
   name: postgres
   secret:
     name: pg-secret
-    user: postgres
-    password: mysecretpassword
-    superUserPassword: superSecretAdminPassword
-    replicationUserPassword: replicationUserPassword
-    adminUserPassword: adminUserPassword
-    appUserPassword: appUserPassword
-    db: mydatabase
-  cm:
-    base:
-      name: base-kubegres-config
-    custom:
-      name: postgres-conf
-  statefulSet:
-    image: postgres:14.1
-    replicaCount: 1
   service:
     port: 5432
-  resources: { }
 
 app:
   name: app
@@ -28,7 +12,7 @@ app:
   api:
     deployment:
       image:
-        repository: senfu
+        repository: ghcr.io/senfu-labs/senfu
         tag: api-1.2.0
       resources:
         limits:
@@ -37,13 +21,11 @@ app:
           cpu: "0.2"
     service:
       ports:
-        name: site-port
-        type: ClusterIP
-        port: 80
+        port: 3000
   site:
     deployment:
       image:
-        repository: senfu
+        repository: ghcr.io/senfu-labs/senfu
         tag: site-1.6.0
       resources:
         limits:
@@ -55,19 +37,15 @@ app:
         site:
           name: site-port
           port: 80
-        sftp:
-          name: sftp-port
-          port: 2300
   secret:
     name: app-secrets
-    cookieSecret: cookieSecret
+  cm:
+    host: senfu.tech
 
 volumes:
   pv:
-    storage: 10Gi
-    storageClass: do-block-storage
+    storage: 20Gi
   pvc:
-    name: postgres-db-postgres-0
-    storage: 10Gi
-    storageClass: do-block-storage
+    name: pano-pv-claim
+    storage: 20Gi
   configMapName: site-nginx-config

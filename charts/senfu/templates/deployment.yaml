@@ -17,9 +17,9 @@ spec:
           image: {{ .Values.app.api.deployment.image.repository }}:{{ .Values.app.api.deployment.image.tag }}
           resources:
             limits:
-              cpu: {{ .Values.app.api.deployment.resources.limits.cpu }}
+              cpu: {{ .Values.app.api.deployment.resources.limits.cpu | quote }}
             requests:
-              cpu: {{ .Values.app.api.deployment.resources.requests.cpu }}
+              cpu: {{ .Values.app.api.deployment.resources.requests.cpu | quote }}
           ports:
             - containerPort: {{ .Values.app.api.service.ports.port }}
           command:
@@ -35,25 +35,23 @@ spec:
             - name: COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.app.secret.name }}
                   key: cookieSecret
+                  name: {{ .Values.app.secret.name }}
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.postgres.secret.name }}
                   key: appUserPassword
+                  name: {{ .Values.postgres.secret.name }}
         - name: site
           image: {{ .Values.app.site.deployment.image.repository }}:{{ .Values.app.site.deployment.image.tag }}
           resources:
             limits:
-              cpu: {{ .Values.app.site.deployment.resources.limits.cpu }}
+              cpu: {{ .Values.app.site.deployment.resources.limits.cpu | quote }}
             requests:
-              cpu: {{ .Values.app.site.deployment.resources.requests.cpu }}
+              cpu: {{ .Values.app.site.deployment.resources.requests.cpu | quote }}
           ports:
             - name: {{ .Values.app.site.service.ports.site.name }}
               containerPort: {{ .Values.app.site.service.ports.site.port }}
-            - name: {{ .Values.app.site.service.ports.sftp.name }}
-              containerPort: {{ .Values.app.site.service.ports.sftp.port }}
           volumeMounts:
             - mountPath: /etc/nginx/nginx.conf
               name: nginx-config
@@ -68,9 +66,9 @@ spec:
             claimName: {{ .Values.volumes.pvc.name }}
         - name: nginx-config
           configMap:
-            name: {{ .Values.volumes.configMapName}}
+            name: {{ .Values.volumes.configMapName }}
             items:
               - key: nginx.conf
                 path: nginx.conf
-{{/*      imagePullSecrets:*/}}
-{{/*        - name: regcred*/}}
+      imagePullSecrets:
+        - name: regcred

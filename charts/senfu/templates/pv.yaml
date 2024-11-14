@@ -9,6 +9,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: {{ .Values.volumes.pv.storageClass }}
   hostPath:
     path: /mnt/data/{{ .Release.Name }}
