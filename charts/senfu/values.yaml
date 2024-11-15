@@ -50,3 +50,6 @@ externalSecrets:
   enabled: false
   secretStoreName: ""
   secrets: []
+
+ingress:
+  enabled: false
