@@ -50,3 +50,15 @@ externalSecrets:
   enabled: false
   secretStoreName: ""
   secrets: []
+
+ingress:
+  enabled: false
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
