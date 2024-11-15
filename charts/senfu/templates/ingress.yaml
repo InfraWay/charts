@@ -16,7 +16,6 @@ metadata:
     {{- include "senfu.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
-    {{ include "common.partial.ingress.private_cloudflare.annotations" $ }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
