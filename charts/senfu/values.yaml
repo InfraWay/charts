@@ -53,3 +53,12 @@ externalSecrets:
 
 ingress:
   enabled: false
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""

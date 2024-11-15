@@ -70,5 +70,10 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        - name: regcred
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.serviceAccount }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- end }}
